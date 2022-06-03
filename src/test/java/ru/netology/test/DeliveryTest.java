@@ -1,6 +1,10 @@
 package ru.netology.test;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,10 +26,21 @@ public class DeliveryTest {
     private final int daysToAddForReplanMeeting = 7;
     private final String replanMeetingDate = DataGenerator.generateDate(daysToAddForReplanMeeting);
 
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
+
+    @AfterAll
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
+    }
+
     @BeforeEach
     void setup() {
         open("http://localhost:9999");
     }
+
     @Test
     void firstTest() {
         Configuration.holdBrowserOpen = true;
